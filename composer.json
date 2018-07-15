@@ -1,0 +1,22 @@
+{
+  "name": "renatio/formbuilder",
+  "description": "Renatio Form Builder OctoberCMS plugin",
+  "keywords": ["october", "cms", "builder", "plugin", "renatio", "form", "contact"],
+  "license": "MIT",
+
+  "authors": [
+    {
+      "name": "Michal Plodowski",
+      "email": "michal.plodowski@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "google/recaptcha": "~1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Renatio\\FormBuilder\\": "src/"
+    }
+  }
+}
