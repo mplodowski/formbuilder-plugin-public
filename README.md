@@ -21,7 +21,7 @@ Without any technical knowledge create functional forms for all your needs.
 * Simple contact form included
 * Native ajax files upload
 * Basic responsive mail templates
-* Google reCaptcha support
+* Google reCAPTCHA v2 and v3 support
 * RainLab Translate Plugin support with Multisite
 * RainLab Location Plugin support
 * RainLab Pages Plugin support to use form as snippet
@@ -35,7 +35,7 @@ Without any technical knowledge create functional forms for all your needs.
 ## Why is this a paid plugin?
 
 Something that is free has little or no perceived value. Users do not commit to free products and only use them until
-something else looks nice and is free comes along. When I invest my time in the development of a new plugin I commit to
+something else that looks nice and free comes along. When I invest my time in the development of a new plugin I commit to
 supporting and maintaining it. I ask my customers to do the same. I do not make money from this plugin by
 advertisements, upgrades or additional services like hosting or setup.
 
@@ -254,14 +254,27 @@ Renders a list of radio options, where only one item can be selected at a time.
 
 #### reCaptcha
 
-Renders google reCaptcha box for SPAM protection.
+Renders Google reCAPTCHA for SPAM protection. Both **reCAPTCHA v2** (checkbox) and **reCAPTCHA v3** (invisible score-based) are supported.
 
-Please visit the [reCaptcha site](https://www.google.com/recaptcha/admin) to obtain credentials.
+Please visit the [reCAPTCHA site](https://www.google.com/recaptcha/admin) to obtain credentials.
 
-Next go to Settings -> Form Builder -> Google reCaptcha and fill your site key and secret.
+Next go to **Settings -> Form Builder -> Google reCAPTCHA** and configure:
+
+- **Version** — choose between reCAPTCHA v2 (Checkbox) and reCAPTCHA v3 (Invisible).
+- **Site Key** — your reCAPTCHA site key (must match the selected version).
+- **Secret Key** — your reCAPTCHA secret key.
+- **Score Threshold** (v3 only) — minimum score (0.0 to 1.0) required to pass validation. Default is 0.5. Lower values are more permissive, higher values are stricter.
+- **Language** — language for the reCAPTCHA widget.
+- **Theme** — light or dark theme for the v2 checkbox widget.
 
 > **Important note:** This field must have **g-recaptcha-response** as field name and **required|recaptcha** in
 > validation section to work properly.
+
+##### reCAPTCHA v3
+
+reCAPTCHA v3 works invisibly in the background — no user interaction is required. It scores each request from 0.0 (likely bot) to 1.0 (likely human). The token is automatically generated and submitted with the form via a hidden input field.
+
+When using v3, make sure your site key and secret key are specifically created for reCAPTCHA v3 in the Google reCAPTCHA admin console — v2 and v3 keys are not interchangeable.
 
 #### Files upload
 
@@ -407,7 +420,7 @@ In your extension plugin boot method listen for this event:
 ```
 Event::listen('formBuilder.beforeSendMessage', function ($form, $data) {
     // example code
-    $form->from_email = 'john.doe@exampl.com';
+    $form->from_email = 'john.doe@example.com';
     $form->from_name = 'John Doe';
 });
 ```
