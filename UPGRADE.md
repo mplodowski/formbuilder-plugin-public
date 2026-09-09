@@ -82,3 +82,13 @@ If you want to take advantage of the corrected and fully unique field IDs in you
 This ensures that the updated `field_id` logic is applied to all field types, including those previously customized.
 
 If you have manually modified any field types or their markup, it is recommended to review and update them manually instead of resetting them to default.
+
+## Upgrading to 5.1.4
+
+Forms and field types are duplicated with native `duplicate()` methods instead of `bkwld/cloner`, so the `cloner::cloning` and `cloner::cloned` events are no longer fired.
+
+## Upgrading to 5.1.5
+
+Field type markup receives only `settings.site_key`, `settings.version`, `settings.theme` and `settings.lang`; any other setting referenced in customised markup renders empty. reCAPTCHA markup that still matches the 5.1.3 default is refreshed automatically; customised or older markup must be restored to default or updated by hand to support v3. `FieldValue::get()` now requires a `Field` instance.
+
+The autoresponder is saved as its own form log instead of overwriting the submission log, so a form with both switches on produces two logs per submission and the log export contains both. The new `is_autoresponder` column and list filter tell them apart. With only "Enable autoresponder submissions logging" on, the autoresponder log (with the submitted data) is now saved where before nothing was.
