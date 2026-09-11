@@ -157,8 +157,9 @@ Turn on **Floating labels** in the form's **Options** tab to render
 
 ### Custom HTML markup for fields
 
-You can change HTML markup for each field type under **Form Builder → Field types**. The recommended approach is to
-duplicate the field type and modify the copy.
+The default markup of every field type uses [Bootstrap 5](https://getbootstrap.com/docs/5.3/forms/overview/) form
+classes. On a theme with another CSS framework, or none, change the HTML markup of each field type under
+**Form Builder → Field types**. The recommended approach is to duplicate the field type and modify the copy.
 
 ### Custom field types
 
@@ -171,6 +172,7 @@ In markup section you can use Twig and following variables:
 -------------------|--------|----------------------------------------------------
  label             | String | Label for the field.
  field_id          | String | Unique field ID useful when pairing labels with inputs.
+ required          | Bool   | Whether the validation rules include `required` or `accepted`.
  label_class       | String | Label CSS classes.
  name              | String | HTML name attribute. Also used in mail template.
  default           | String | Default value for the field.
@@ -180,6 +182,12 @@ In markup section you can use Twig and following variables:
  placeholder       | String | Placeholder for the field.
  options           | Array  | Options for dropdown, radio list, checkbox list.
  custom_attributes | String | Custom HTML attributes. For example id="my-field".
+
+### Accessibility
+
+The default field types link labels, help text and validation errors to the field, mark fields with a `required` or
+`accepted` rule as required, and group checkbox and radio lists in a `fieldset`. Add `autocomplete` through **Custom
+attributes** on fields that collect personal data, for example `autocomplete="email"`.
 
 ### Available field types
 

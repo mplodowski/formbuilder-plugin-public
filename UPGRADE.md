@@ -57,3 +57,12 @@ that breaks this rule (and its variable in the mail template) when saving it fai
 form template is parsed, so Twig syntax typed into a label or a default value is rendered literally. Merge the changes
 into `form.js` if you ship a customised copy: validation errors now clear as the visitor corrects the field, and a
 second submit is blocked while the first is pending.
+
+## Upgrading To 5.3.0
+
+Run `php artisan october:migrate`. Field types still on the default markup are refreshed automatically; restore
+customised ones under **Form Builder → Field types** or add the error and help ids, `aria-*` attributes and the new
+`required` variable by hand. Required fields now show an asterisk, checkbox and radio lists render as a `fieldset`
+with a `legend` and option ids `{field_id}-option-{key}`, and the Section heading is an `h2` styled as `h4`, so check
+theme CSS and JS that target these elements.
+Merge the `form.js` changes if you ship a customised copy.
