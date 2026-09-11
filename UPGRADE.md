@@ -2,93 +2,58 @@
 
 Versions not listed here need no action. Back up the database before upgrading.
 
-## Upgrading to 1.1.0
+## Upgrading To 2.0.1
 
-From version 1.1.0 plugin requires October build 300 and above.
+Requires October CMS 2.x and PHP 7.3. Upgrading from 1.5.0 needs a reinstall or `php artisan formbuilder:patch 2.0`.
 
-## Upgrading to 1.1.4
+## Upgrading To 3.0.0
 
-Added wrapper_class to field properties. Update fields type manually if you want to use this.
+Requires October CMS 3.0 and PHP 8.0.
 
-## Upgrading to 1.2.7
+## Upgrading To 3.1.0
 
-Plugin will register Contact Form Template and Default Form Template. If you would like to use new mail layout you need
-to create it manually from the source /plugins/renatio/formbuilder/updates/mail/layouts/formbuilder/. Layout code should
-be specified as form_builder. Assign newly created layout to the templates by updating them manually.
+Field types are rewritten for Bootstrap 5; forms rendered with an older framework need their markup adjusted.
+Permissions are now granular, so review the roles after the upgrade. Validation uses the AJAX Framework extras
+(`{% framework extras %}` in the layout).
 
-## Upgrading to 2.0.1
+## Upgrading To 4.0.0
 
-Plugin requires OctoberCMS version 2.x with Laravel 6.x and PHP >=7.3.
+Upgrade to 3.1.3 first and back up the database. The `responsiv/uploader-plugin` integration is replaced by native
+AJAX file uploads: the migration adds the new upload field type and moves the old upload fields to it. Check the forms
+with uploads afterwards.
 
-Drop support for OctoberCMS version 1.x.
+## Upgrading To 5.0.1
 
-If you upgrade from version 1.5.0, then you should reinstall plugin or apply patch with following command:
+Requires October CMS 4.x.
 
-```
-php artisan formbuilder:patch 2.0
-```
+## Upgrading To 5.1.0
 
-## Upgrading to 3.0.0
+Field IDs are now unique per form. Restore the field types to the default markup to pick this up; customised field
+types need the `field_id` variable added by hand.
 
-Plugin requires October CMS version 3.0 or higher, Laravel 9.0 or higher and PHP >=8.0.
-
-Drop support for October CMS version 2.x.
-
-## Upgrading to 3.1.0
-
-Major refactor of the code to use PHP 8, Laravel 9 and October CMS 3.1 features.
-
-Please review documentation for more information about new features.
-
-List of changes:
-
-- Default support for Bootstrap 5
-- Rewrite of field types to use Bootstrap 5
-- Floating labels (only available when using Bootstrap 5)
-- Custom template for the form
-- Full support for RainLab Translate 2.0 and Multisite
-- Rework form validation to use AjaxFramework extra features
-- Multiple forms on the same page
-- Improve error handling
-- Improve form logs
-- Granular permissions (please review them after upgrade)
-- Import/Export forms
-- Import/Export field types
-- Export form logs
-- New field types: email, phone, url, numeric, datetime, date, time, color picker
-- Restore all field types to default markup
-- New event `formBuilder.extendFormData` to allow change of submitted form data
-- Spam Protection plugin support
-
-## Upgrading to 4.0.0
-
-Before making the update please check if you are currently on 3.1.3 version of the plugin. If no, then make previous upgrades first.
-
-Also before upgrading and running migrations please make the database backup.
-
-This version removes `responsiv/uploader-plugin` support with native October ajax file upload.
-
-The migration will add new upload field type and remove old ones. The new field type will be assigned to all old upload fields.
-
-Please check your forms after upgrading.
-
-For more details about new upload field type please read documentation.
-
-## Upgrading to 5.1.0
-
-Version 5.1.0 introduces improved unique `field_id` generation for fields.
-If you want to take advantage of the corrected and fully unique field IDs in your forms, you should reset Field Types to their default markup via the backend UI.
-
-This ensures that the updated `field_id` logic is applied to all field types, including those previously customized.
-
-If you have manually modified any field types or their markup, it is recommended to review and update them manually instead of resetting them to default.
-
-## Upgrading to 5.1.4
+## Upgrading To 5.1.4
 
 Forms and field types are duplicated with native `duplicate()` methods instead of `bkwld/cloner`, so the `cloner::cloning` and `cloner::cloned` events are no longer fired.
 
-## Upgrading to 5.1.5
+## Upgrading To 5.1.5
 
-Field type markup receives only `settings.site_key`, `settings.version`, `settings.theme` and `settings.lang`; any other setting referenced in customised markup renders empty. reCAPTCHA markup that still matches the 5.1.3 default is refreshed automatically; customised or older markup must be restored to default or updated by hand to support v3. `FieldValue::get()` now requires a `Field` instance.
+Run `php artisan october:migrate`. Field type markup receives only `settings.site_key`, `settings.version`,
+`settings.theme` and `settings.lang`; customised reCAPTCHA markup must be restored to default or updated by hand to
+support v3. The autoresponder is saved as its own form submission, so a form with both switches on produces two
+entries per submission.
 
-The autoresponder is saved as its own form log instead of overwriting the submission log, so a form with both switches on produces two logs per submission and the log export contains both. The new `is_autoresponder` column and list filter tell them apart. With only "Enable autoresponder submissions logging" on, the autoresponder log (with the submitted data) is now saved where before nothing was.
+## Upgrading To 5.2.0
+
+**Security release. Upgrade every installation running 5.1.x.** Submitted values are now escaped in the submission
+preview, and every backend AJAX handler checks its permission on the server. Requires PHP 8.2. Run
+`php artisan october:migrate`.
+
+Users who duplicate forms or field types, toggle field visibility or restore the default markup now need the matching
+**Create** or **Update** permission; **Clear form submissions** needs **Truncate form submissions**. Review the roles
+under **Settings → Administrators → Roles**.
+
+Field names must be unique within the form and use only letters, digits, dashes and underscores; rename an older field
+that breaks this rule (and its variable in the mail template) when saving it fails. Field HTML is inserted after the
+form template is parsed, so Twig syntax typed into a label or a default value is rendered literally. Merge the changes
+into `form.js` if you ship a customised copy: validation errors now clear as the visitor corrects the field, and a
+second submit is blocked while the first is pending.

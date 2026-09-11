@@ -1,41 +1,40 @@
-# Form Builder plugin
+# Form Builder Plugin
 
-**Demo URL:** https://october-demo.renatio.com/backend/backend/auth/signin
+Build forms for your [October CMS](https://octobercms.com) site without code — with file uploads, reCAPTCHA and a log
+of every submission.
 
-**Login:** formbuilder
-
+**Demo URL:** https://october-demo.renatio.com/backend/backend/auth/signin  
+**Login:** formbuilder  
 **Password:** formbuilder
 
-Plugin allows you to build custom front-end forms with ease.
-Without any technical knowledge create functional forms for all your needs.
-
-![OctoberCMS Form Builder](https://octobercms.com/storage/app/uploads/public/637/dde/9a9/637dde9a9a1d4324788036.png)
+Contact forms, quote requests, job applications or surveys: put the form together from ready field types, place it on
+a page, and every submission lands in your inbox and in the backend.
 
 ## Features
 
-* Build and manage your forms in OctoberCMS backend
-* Use custom HTML markup for fields
-* Create custom fields
-* Reorder fields
-* Example form with all default form controls
-* Simple contact form included
-* Native ajax files upload
-* Basic responsive mail templates
-* Google reCAPTCHA v2 and v3 support
-* RainLab Translate Plugin support with Multisite
-* RainLab Location Plugin support
-* RainLab Pages Plugin support to use form as snippet
-* Duplicate form and field types
-* Reply to functionality and autoresponder with custom mail template
-* Form submissions with export functionality
-* Event for extending default functionality
-* Custom Form Template
-* [Spam Protection Plugin](https://octobercms.com/plugin/renatio-spamprotection) support
+* Build and manage forms in the October CMS backend, reorder fields with drag and drop
+* 21 field types out of the box, editable HTML markup for each of them and custom field types
+* Custom form template with the `form_field()` helper for any layout
+* Native AJAX file uploads with attachments in the submission and in the mail
+* Google reCAPTCHA v2 and v3, [Spam Protection Plugin](https://octobercms.com/plugin/renatio-spamprotection) support
+* Reply-to and autoresponder with their own mail templates
+* Form submissions log with e-mail preview, filters, CSV/JSON export and automatic pruning
+* Import and export of forms and field types
+* Granular backend permissions for forms, field types and submissions
+* Events to override the form, the fields, the submitted data and the message
+* RainLab Translate with Multisite, RainLab Location and RainLab Pages (form as a snippet) support
+* Multilingual: English, Polish, German, French, Spanish, Brazilian Portuguese, Italian, Russian, Dutch and Czech translations included — more available on request
+
+## Requirements
+
+This plugin requires October CMS 4.x and PHP 8.2 or newer.
+
+If you are running October CMS 3.x, use the 4.x version of this plugin.
 
 ## Why is this a paid plugin?
 
 Something that is free has little or no perceived value. Users do not commit to free products and only use them until
-something else that looks nice and free comes along. When I invest my time in the development of a new plugin I commit to
+something else that looks nice and is free comes along. When I invest my time in the development of a new plugin I commit to
 supporting and maintaining it. I ask my customers to do the same. I do not make money from this plugin by
 advertisements, upgrades or additional services like hosting or setup.
 
@@ -49,7 +48,7 @@ you feel is missing but valuable.
 
 ## Like this plugin?
 
-If you like this plugin, give this plugin a Like or Make donation with [PayPal](https://www.paypal.me/mplodowski).
+If you like this plugin, give this plugin a like or make a donation with [PayPal](https://www.paypal.me/mplodowski).
 
 ## My other plugins
 
@@ -57,10 +56,11 @@ Please check my other [plugins](https://octobercms.com/author/Renatio).
 
 ## Support
 
-Please use [GitHub Issues Page](https://github.com/mplodowski/formbuilder-plugin-public/issues) to report any issues
-with plugin.
+Please use [GitHub Issues Page](https://github.com/mplodowski/formbuilder-plugin-public/issues) to report any issues with
+the plugin.
 
-> Reviews should not be used for getting support, if you need support please use the Plugin support link.
+> Reviews should not be used for getting support or reporting bugs, if you need support please use the Plugin support
+> link.
 
 Icon made by [Darius Dan](https://www.flaticon.com/authors/darius-dan)
 from [www.flaticon.com](https://www.flaticon.com/).
@@ -69,34 +69,23 @@ from [www.flaticon.com](https://www.flaticon.com/).
 
 ## Usage
 
-After installation plugin will register backend **Form Builder** menu position. From there you will be able to manage
-your forms.
+After installation the plugin registers the **Form Builder** backend menu with four items: **Forms**, **Field types**,
+**Form submissions** and **Settings**. Two example forms are installed: a simple contact form and a default form that
+demonstrates every field type.
 
-There will be three sub-menus, Forms, Field types and Form logs.
+Place the `renderForm` component on a CMS page, inspect it and choose the form.
 
-Forms list all created forms.
-
-Field types list all available field types.
-
-Form logs list all forms submissions.
-
-There will be two example forms included after installation. Simple contact form and default form, that will demonstrate
-all available fields.
-
-Plugin will register `renderForm` component to use it on CMS page. After adding component to CMS page, you must inspect
-it (by clicking on it) and choose the form.
-
-Plugin uses Ajax Framework to process form. Remember to add following code in layout:
+The form is submitted through the AJAX Framework, so the layout must load it next to the page styles:
 
 ```
-{% framework extras %}
-{% scripts %}
-```
-
-Please check if you have a following code in your layout `<head>` section.
-
-```
-{% styles %}
+<head>
+    {% styles %}
+</head>
+<body>
+    ...
+    {% framework extras %}
+    {% scripts %}
+</body>
 ```
 
 ### Example of placing form component on CMS page
@@ -133,21 +122,22 @@ formCode = "contact-form"
 {% component 'contactForm' %}
 ```
 
-> **Important note:** For form handler to work you must use `{% ajaxPartial %}` instead of normal partial
-> tag `{% partial %}`.
+> **Important note:** The form handler works only inside `{% ajaxPartial %}`, not inside a plain `{% partial %}`.
 
 ## Forms
 
 ### Spam Protection
 
-If you need Spam protection for your forms I recommend to install following
-plugin: [Spam Protection Plugin](https://octobercms.com/plugin/renatio-spamprotection)
+Install the [Spam Protection Plugin](https://octobercms.com/plugin/renatio-spamprotection) to protect every Form Builder
+form with a honeypot, content rules, a single-use form token and a per-visitor rate limit. It works out of the box.
 
-After you install this plugin it will automatically protect all your forms. It will work out of the box.
+A submission identical to one accepted within the last minute is answered with the success message but is neither
+logged nor mailed again, so a double click or a page refresh after sending does not produce duplicates.
 
 ### Custom template
 
-By default, the plugin will automatically generate the template when the **Custom Template** field is empty. If you want to replace the default markup generated by the plugin, you can write your own template here. You have access to special `form_field()` function which takes one parameter: the name of the field.
+The plugin generates the form template while the **Custom Template** field is empty. To replace that markup, write your
+own template there and render each field with the `form_field()` function, which takes the field name.
 
 Example that will display two fields in one row:
 
@@ -160,23 +150,20 @@ Example that will display two fields in one row:
 
 ### Floating labels
 
-Simple form labels that float over your input fields. This requires to use Bootstrap 5.
+Turn on **Floating labels** in the form's **Options** tab to render
+[Bootstrap floating labels](https://getbootstrap.com/docs/5.3/forms/floating-labels/). The theme must use Bootstrap 5.
 
 ## Fields
 
 ### Custom HTML markup for fields
 
-You can change HTML markup for each field by going to Form Builder -> Field types and updating the field type.
-Recommended approach is to duplicate field type and then modify it as you wish.
+You can change HTML markup for each field type under **Form Builder → Field types**. The recommended approach is to
+duplicate the field type and modify the copy.
 
 ### Custom field types
 
-You can create custom field types by going to Form Builder -> Field types and clicking **New field type** button.
-
-For example if you want to create **Email** field type just duplicate the markup from **Text** field type and change the
-type of the input from text to email.
-
-Now after saving this field it will be possible to use it in your form.
+Create a field type under **Form Builder → Field types** with the **New field type** button. For example, an **Email**
+field type is the markup of **Text** with the input type changed to `email`. Once saved, it can be used in any form.
 
 In markup section you can use Twig and following variables:
 
@@ -196,134 +183,72 @@ In markup section you can use Twig and following variables:
 
 ### Available field types
 
-#### Text
-
-Renders a single line text box.
-
-#### E-mail
-
-Renders e-mail address field.
-
-#### Phone number
-
-Renders phone number field.
-
-#### URL
-
-Renders URL field.
-
-#### Numeric
-
-Renders numeric field.
-
-#### Datetime
-
-Renders datetime field.
-
-#### Date
-
-Renders date field.
-
-#### Time
-
-Renders time field.
-
-#### Color Picker
-
-Renders a color picker.
-
-#### Textarea
-
-Renders a multiline text box.
-
-#### Dropdown
-
-Renders a dropdown with specified options.
-
-#### Checkbox
-
-Renders a single checkbox.
-
-#### Checkbox List
-
-Renders a list of checkboxes.
-
-#### Radio List
-
-Renders a list of radio options, where only one item can be selected at a time.
+| Field type | Renders |
+|---|---|
+| Text | a single-line text input |
+| Textarea | a multi-line text box |
+| E-mail, Phone number, URL, Numeric | an `email`, `tel`, `url` or `number` input |
+| Date, Time, Datetime | a `date`, `time` or `datetime-local` input |
+| Color Picker | a `color` input |
+| Dropdown | a dropdown with the given options |
+| Checkbox | a single checkbox |
+| Checkbox List | a list of checkboxes |
+| Radio List | a list of radio options, where only one can be selected |
+| Hidden | a hidden input |
+| Section | a heading and subheading for grouping fields |
+| Submit | the submit button |
+| reCaptcha, File upload, Country select, State select | see below |
 
 #### reCaptcha
 
-Renders Google reCAPTCHA for SPAM protection. Both **reCAPTCHA v2** (checkbox) and **reCAPTCHA v3** (invisible score-based) are supported.
+Renders Google reCAPTCHA, either **v2** (checkbox) or **v3** (invisible and score-based, no user interaction).
 
-Please visit the [reCAPTCHA site](https://www.google.com/recaptcha/admin) to obtain credentials.
+Create the keys on the [reCAPTCHA site](https://www.google.com/recaptcha/admin) — v2 and v3 keys are not
+interchangeable — and enter them under **Settings → Form Builder → Google reCAPTCHA**:
 
-Next go to **Settings -> Form Builder -> Google reCAPTCHA** and configure:
-
-- **Version** — choose between reCAPTCHA v2 (Checkbox) and reCAPTCHA v3 (Invisible).
-- **Site Key** — your reCAPTCHA site key (must match the selected version).
-- **Secret Key** — your reCAPTCHA secret key.
-- **Score Threshold** (v3 only) — minimum score (0.0 to 1.0) required to pass validation. Default is 0.5. Lower values are more permissive, higher values are stricter.
-- **Language** — language for the reCAPTCHA widget.
-- **Theme** — light or dark theme for the v2 checkbox widget.
+- **Version** — reCAPTCHA v2 (Checkbox) or reCAPTCHA v3 (Invisible).
+- **Site Key** and **Secret Key** — must match the selected version.
+- **Score Threshold** (v3 only) — minimum score from 0.0 (likely bot) to 1.0 (likely human) needed to pass. Default is
+  0.5.
+- **Language** — language of the widget.
+- **Theme** — light or dark v2 checkbox widget.
 
 > **Important note:** This field must have **g-recaptcha-response** as field name and **required|recaptcha** in
 > validation section to work properly.
 
-##### reCAPTCHA v3
-
-reCAPTCHA v3 works invisibly in the background — no user interaction is required. It scores each request from 0.0 (likely bot) to 1.0 (likely human). The token is automatically generated and submitted with the form via a hidden input field.
-
-When using v3, make sure your site key and secret key are specifically created for reCAPTCHA v3 in the Google reCAPTCHA admin console — v2 and v3 keys are not interchangeable.
-
-#### Files upload
+#### File upload
 
 Renders a file input.
 
 ##### Filter files selected by a user
 
-To filter allowed file extensions or file types you can add custom attribute.
-
-For example to only allow selecting files with extension .pdf or .doc.
-
-```
-accept=".pdf,.doc"
-```
-
-For example to only allow selecting images:
-
-```
-accept="image/*"
-```
+To limit the file picker, add an `accept` custom attribute, for example `accept=".pdf,.doc"` for PDF and Word files or
+`accept="image/*"` for images.
 
 ##### Validation
 
-To make file input required just add `required` in validation section.
+Add the rules in the field's validation section:
 
-To restrict max file size to 512 kb just add `max:512` in validation section.
+- `required` — a file must be chosen,
+- `max:512` — at most 512 KB,
+- `mimes:pdf` — PDF files only,
+- `image` — images only.
 
-To restrict file mime type to pdfs just add `mimes:pdf` in validation section.
-
-To restrict file to images just add `image` in validation section.
-
-For more available validation rules see October documentation.
+See the [available validation rules](https://docs.octobercms.com/4.x/extend/services/validation.html#available-validation-rules)
+for more.
 
 ##### Multiple files
 
-By default, the file upload field allows uploading only a single file. To enable multiple file uploads in `Upload options` tab
-check `Allow multiple files` checkbox.
-
-When validating multiple files to work correctly you must check `Nested array based form input` checkbox in validation
-section. This will apply validation for each uploaded file. Do not check this checkbox when using `required` rule.
+To accept more than one file, check **Allow multiple files** in the **Upload Options** tab. Then check **Nested array
+based form input** next to each rule so it applies to every uploaded file, except the `required` rule.
 
 ##### Send uploaded files as mail attachments
 
-By default uploaded files are sent with mail as attachments. You can disable this behavior by unchecking the checkbox.
+Uploaded files are attached to the mail by default. Uncheck the option to send the mail without them.
 
 ##### Display mode
 
-Display mode informs the backend how uploaded files should be displayed within a form submission entry. If you only allow to upload
-images then select `image` mode.
+Tells the backend how to show the uploaded files in a form submission. Choose `image` when only images are allowed.
 
 #### Country select
 
@@ -339,92 +264,86 @@ Renders a dropdown with state options. This field depends on country select.
 > **Important note:** You must install [Location Plugin](https://octobercms.com/plugin/rainlab-location) to use this
 > field.
 
-#### Section
-
-Renders a section heading and subheading. Useful for grouping fields.
-
-#### Submit
-
-Renders form submit button.
-
 ## Using form data in mail templates
 
-When sending emails, all submitted form data is available directly in the mail template.
-
-If your form contains a field named **name**, you can output its processed value simply by using:
+Every submitted field is available in the mail template under its name. For a field named **name**:
 
 ```
 {{ name }}
 ```
 
-This value is already transformed by Form Builder.
-
-For example:
-
-- dropdown fields return the **label** of the selected option,
-- checkbox lists return a readable value,
-- formatting is normalized.
-
-If you need access to the **raw submitted value** (exactly what the browser sent, before Form Builder processes it), use:
+The value is already processed by Form Builder: dropdowns and radio lists return the **label** of the selected option,
+checkbox lists the selected labels separated by commas, a checkbox *Yes* or *No*, and country and state selects the
+name. The value exactly as the browser sent it is available with the `_raw` suffix:
 
 ```
 {{ name_raw }}
 ```
 
-Every field automatically exposes a `{{ fieldname_raw }}` variable.
-
 ## Form Submissions
 
-Form Builder plugin has built-in functionality for storing submitted form data. Each submission record contains the user's input and any file attachments.
+Every submission is stored under **Form Builder → Form submissions** with the submitted values, the uploaded files, the
+sender IP address and a preview of the sent e-mail. The autoresponder is stored as a separate submission, marked with
+the **Autoresponder** column and filter. Turn logging off per form in the **Options** tab; a form without a mail
+template always logs, because the submission would otherwise be lost.
+
+Submissions are pruned by a daily scheduled job after **Prune period in days** from **Settings → Form Builder**.
+It only runs if October's scheduler is running (`php artisan schedule:run` every minute). Leave the period empty to
+keep submissions forever.
+
+Submissions can be exported to CSV or JSON from the toolbar.
+
+## Settings
+
+Plugin settings are available at **Settings → Form Builder**.
+
+- **reCAPTCHA version**, **Site key**, **Secret key**, **Score threshold**, **Language**, **Theme** — see the
+  *reCaptcha* field type above. The pre-filled demo keys work with v2 only.
+- **Prune period in days** — how long submissions are kept. Default: `30`.
+
+## Permissions
+
+| Permission | Grants |
+|---|---|
+| **Manage Forms** | the Forms list; create, update, delete and import/export have their own permission each |
+| **Manage field types** | the Field types list; create, update, delete and import/export have their own permission each. Update also covers restoring the default markup |
+| **Manage form submissions** | the Form submissions list; preview, delete, truncate and export have their own permission each |
+| **Manage Settings** | the plugin settings page |
+
+Every backend action checks its permission on the server, so a user without it gets a 403 even when the button is
+reached by hand.
 
 ## Events
 
-Plugin will fire **formBuilder.overrideForm** event which allow to change form properties before rendering the form
-markup.
+| Event | Fired when | Payload |
+|---|---|---|
+| `formBuilder.overrideForm` | before the form markup is rendered | `&$form` — replace or change the model |
+| `formBuilder.overrideField` | before each field is rendered | `&$field`, `$form` |
+| `formBuilder.formSubmitted` | the submission passed validation | `&$form` |
+| `formBuilder.extendFormData` | before the mail data is built; return the array to replace it | `$data` |
+| `formBuilder.beforeSendMessage` | before the mail is sent; return `false` to cancel it | `$form`, `$data` |
 
-```
+Listen in your plugin's `boot()` method:
+
+```php
 Event::listen('formBuilder.overrideForm', function ($form) {
-    // example code
     $form->css_class = 'form-horizontal';
 });
-```
 
-Plugin will fire **formBuilder.overrideField** event which allow to change field properties before rendering the form
-markup.
-
-```
 Event::listen('formBuilder.overrideField', function ($field, $form) {
-    // example code
     if ($field->name === 'currency') {
         $field->default = 'USD';
     }
 });
-```
 
-Plugin will fire **formBuilder.extendFormData** event which allow to change submitted form data.
-
-```
 Event::listen('formBuilder.extendFormData', function ($data) {
-    // example code
     $data['foo'] = 'bar';
 
-    return $data; // this line is required
+    return $data;
 });
-```
 
-Plugin will fire **formBuilder.beforeSendMessage** event before sending email. You can use this to extend Form Builder
-default functionality.
-
-In your extension plugin boot method listen for this event:
-
-```
 Event::listen('formBuilder.beforeSendMessage', function ($form, $data) {
-    // example code
     $form->from_email = 'john.doe@example.com';
     $form->from_name = 'John Doe';
 });
 ```
-
-You will have access to form object and array with posted data.
-
-If you return **false** from this event then this will stop default behavior of sending email message.
